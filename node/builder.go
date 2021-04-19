@@ -150,6 +150,7 @@ const (
 
 	SetApiEndpointKey
 
+	SetAuthEndpoint
 	_nInvokes // keep this last
 )
 
