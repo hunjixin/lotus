@@ -1155,6 +1155,21 @@ func (mr *MockFullNodeMockRecorder) MpoolSelect(arg0, arg1, arg2 interface{}) *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MpoolSelect", reflect.TypeOf((*MockFullNode)(nil).MpoolSelect), arg0, arg1, arg2)
 }
 
+// MpoolSelects mocks base method
+func (m *MockFullNode) MpoolSelects(arg0 context.Context, arg1 types.TipSetKey, arg2 []float64) ([][]*types.SignedMessage, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MpoolSelects", arg0, arg1, arg2)
+	ret0, _ := ret[0].([][]*types.SignedMessage)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// MpoolSelects indicates an expected call of MpoolSelects
+func (mr *MockFullNodeMockRecorder) MpoolSelects(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MpoolSelects", reflect.TypeOf((*MockFullNode)(nil).MpoolSelects), arg0, arg1, arg2)
+}
+
 // MpoolSetConfig mocks base method
 func (m *MockFullNode) MpoolSetConfig(arg0 context.Context, arg1 *types.MpoolConfig) error {
 	m.ctrl.T.Helper()
