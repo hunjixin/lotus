@@ -4,9 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/filecoin-project/lotus/api/apistruct"
-	"github.com/ipfs-force-community/venus-auth/cmd/jwtclient"
-	"github.com/ipfs-force-community/venus-auth/core"
 	"net"
 	"net/http"
 	_ "net/http/pprof"
@@ -25,6 +22,9 @@ import (
 
 	"github.com/filecoin-project/go-jsonrpc"
 	"github.com/filecoin-project/go-jsonrpc/auth"
+
+	"github.com/ipfs-force-community/venus-auth/cmd/jwtclient"
+	"github.com/ipfs-force-community/venus-auth/core"
 
 	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/api/v0api"
@@ -95,7 +95,7 @@ func (h *Handler2) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.Next(w, r.WithContext(ctx))
 }
 
-func serveRPC(a api.FullNode, authEndpoint string, stop node.StopFunc, addr multiaddr.Multiaddr, shutdownCh <-chan struct{}, maxRequestSize int64) error {
+func serveRPC(a v1api.FullNode, authEndpoint string, stop node.StopFunc, addr multiaddr.Multiaddr, shutdownCh <-chan struct{}, maxRequestSize int64) error {
 	serverOptions := make([]jsonrpc.ServerOption, 0)
 	if maxRequestSize != 0 { // config set
 		serverOptions = append(serverOptions, jsonrpc.WithMaxRequestSize(maxRequestSize))
@@ -122,10 +122,9 @@ func serveRPC(a api.FullNode, authEndpoint string, stop node.StopFunc, addr mult
 
 	}
 
-	//pma := api.PermissionedFullAPI(metrics.MetricedFullAPI(a))
-	//serveRpc("/rpc/v1", pma)
-	//serveRpc("/rpc/v0", &v0api.WrapperV1Full{FullNode: pma})
-	serveRpc("/rpc/v0", apistruct.PermissionedFullAPI(metrics.MetricedFullAPI(a)))
+	pma := api.PermissionedFullAPI(metrics.MetricedFullAPI(a))
+	serveRpc("/rpc/v1", pma)
+	serveRpc("/rpc/v0", &v0api.WrapperV1Full{FullNode: pma})
 
 	importAH := &auth.Handler{
 		Verify: a.AuthVerify,
@@ -190,7 +189,7 @@ func handleImport(a *impl.FullNodeAPI) func(w http.ResponseWriter, r *http.Reque
 			w.WriteHeader(404)
 			return
 		}
-		if !auth.HasPerm(r.Context(), nil, apistruct.PermWrite) {
+		if !auth.HasPerm(r.Context(), nil, api.PermWrite) {
 			w.WriteHeader(401)
 			_ = json.NewEncoder(w).Encode(struct{ Error string }{"unauthorized: missing write permission"})
 			return

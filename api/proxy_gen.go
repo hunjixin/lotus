@@ -251,6 +251,8 @@ type FullNodeStruct struct {
 
 		MpoolSelect func(p0 context.Context, p1 types.TipSetKey, p2 float64) ([]*types.SignedMessage, error) `perm:"read"`
 
+		MpoolSelects func(p0 context.Context, p1 types.TipSetKey, p2[]float64) ([][]*types.SignedMessage, error)
+
 		MpoolSetConfig func(p0 context.Context, p1 *types.MpoolConfig) error `perm:"admin"`
 
 		MpoolSub func(p0 context.Context) (<-chan MpoolUpdate, error) `perm:"read"`
@@ -1569,6 +1571,14 @@ func (s *FullNodeStruct) MpoolSelect(p0 context.Context, p1 types.TipSetKey, p2 
 
 func (s *FullNodeStub) MpoolSelect(p0 context.Context, p1 types.TipSetKey, p2 float64) ([]*types.SignedMessage, error) {
 	return *new([]*types.SignedMessage), xerrors.New("method not supported")
+}
+
+func (s *FullNodeStruct) MpoolSelects(p0 context.Context, p1 types.TipSetKey, p2[]float64) ([][]*types.SignedMessage, error) {
+	return s.Internal.MpoolSelects(p0, p1, p2)
+}
+
+func (s *FullNodeStub) MpoolSelects(p0 context.Context, p1 types.TipSetKey, p2[]float64) ([][]*types.SignedMessage, error) {
+	return *new([][]*types.SignedMessage), xerrors.New("method not supported")
 }
 
 func (s *FullNodeStruct) MpoolSetConfig(p0 context.Context, p1 *types.MpoolConfig) error {
