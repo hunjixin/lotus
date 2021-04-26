@@ -704,11 +704,11 @@ func (sm *StorageMinerAPI) ComputeProof(ctx context.Context, ssi []builtin.Secto
 }
 
 func (sm *StorageMinerAPI) StartSeal(ctx context.Context) error {
-	return sm.Miner.Stop(ctx)
+	return sm.Miner.StartSeal(ctx)
 }
 
 func (sm *StorageMinerAPI) StopSeal(ctx context.Context) error {
-	return sm.Miner.Start(ctx)
+	return sm.Miner.StopSeal(ctx)
 }
 
 var _ api.StorageMiner = &StorageMinerAPI{}
