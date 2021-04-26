@@ -180,7 +180,18 @@ func (m *Miner) handleSealingNotifications(before, after sealing.SectorInfo) {
 	})
 }
 
+func (m *Miner) Start(ctx context.Context) error {
+	if m.sealing.State() == sealing.SEALING {
+		return xerrors.Errorf("sealing already running")
+	}
+	go m.sealing.Run(ctx)
+	return nil
+}
+
 func (m *Miner) Stop(ctx context.Context) error {
+	if m.sealing.State() == sealing.SEALINGSTOP {
+		return xerrors.Errorf("sealing in stop")
+	}
 	return m.sealing.Stop(ctx)
 }
 

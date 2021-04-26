@@ -104,8 +104,9 @@ type Sealing struct {
 
 	terminator *TerminateBatcher
 
-	getConfig GetSealingConfigFunc
-	dealInfo  *CurrentDealInfoManager
+	getConfig    GetSealingConfigFunc
+	dealInfo     *CurrentDealInfoManager
+	sealingState SealingState
 }
 
 type FeeConfig struct {
@@ -166,12 +167,24 @@ func New(api SealingAPI, fc FeeConfig, events Events, maddr address.Address, ds 
 	return s
 }
 
+func (m *Sealing) State() SealingState {
+	return m.sealingState
+}
+
 func (m *Sealing) Run(ctx context.Context) error {
 	if err := m.restartSectors(ctx); err != nil {
 		log.Errorf("%+v", err)
 		return xerrors.Errorf("failed load sector states: %w", err)
 	}
+	m.sealingState = SEALING
+	return nil
+}
 
+func (m *Sealing) StopSeal(ctx context.Context) error {
+	if err := m.sectors.Stop(ctx); err != nil {
+		return err
+	}
+	m.sealingState = SEALINGSTOP
 	return nil
 }
 

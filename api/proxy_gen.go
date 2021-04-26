@@ -547,6 +547,9 @@ type StorageMinerStruct struct {
 
 		ComputeProof func(p0 context.Context, p1 []builtin.SectorInfo, p2 abi.PoStRandomness) ([]builtin.PoStProof, error) `perm:"read"`
 
+		StartSeal func(ctx context.Context) error `perm:"admin"`
+		StopSeal  func(ctx context.Context) error `perm:"admin"`
+
 		CreateBackup func(p0 context.Context, p1 string) error `perm:"admin"`
 
 		DealsConsiderOfflineRetrievalDeals func(p0 context.Context) (bool, error) `perm:"admin"`
@@ -3037,6 +3040,14 @@ func (s *StorageMinerStub) ReturnSealPreCommit1(p0 context.Context, p1 storiface
 
 func (s *StorageMinerStruct) ReturnSealPreCommit2(p0 context.Context, p1 storiface.CallID, p2 storage.SectorCids, p3 *storiface.CallError) error {
 	return s.Internal.ReturnSealPreCommit2(p0, p1, p2, p3)
+}
+
+func (s *StorageMinerStruct) StartSeal(ctx context.Context) error {
+	return s.Internal.StartSeal(ctx)
+}
+
+func (s *StorageMinerStruct) StopSeal(ctx context.Context) error {
+	return s.Internal.StopSeal(ctx)
 }
 
 func (s *StorageMinerStub) ReturnSealPreCommit2(p0 context.Context, p1 storiface.CallID, p2 storage.SectorCids, p3 *storiface.CallError) error {

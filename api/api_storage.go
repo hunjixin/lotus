@@ -169,6 +169,8 @@ type StorageMiner interface {
 	CheckProvable(ctx context.Context, pp abi.RegisteredPoStProof, sectors []storage.SectorRef, expensive bool) (map[abi.SectorNumber]string, error) //perm:admin
 
 	ComputeProof(ctx context.Context, ssi []builtin.SectorInfo, rand abi.PoStRandomness) ([]builtin.PoStProof, error) //perm:read
+	StartSeal(ctx context.Context) error
+	StopSeal(ctx context.Context) error
 }
 
 var _ storiface.WorkerReturn = *new(StorageMiner)

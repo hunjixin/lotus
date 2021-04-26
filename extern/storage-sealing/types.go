@@ -216,3 +216,10 @@ type GetSealingConfigFunc func() (sealiface.Config, error)
 func (mr *MessageReceipt) Equals(o *MessageReceipt) bool {
 	return mr.ExitCode == o.ExitCode && bytes.Equal(mr.Return, o.Return) && mr.GasUsed == o.GasUsed
 }
+
+type SealingState string
+
+const (
+	SEALING     = "sealing"
+	SEALINGSTOP = "stop"
+)
