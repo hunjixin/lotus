@@ -49,6 +49,7 @@ require (
 	github.com/filecoin-project/specs-actors/v4 v4.0.0
 	github.com/filecoin-project/specs-storage v0.1.1-0.20201105051918-5188d9774506
 	github.com/filecoin-project/test-vectors/schema v0.0.5
+	github.com/filecoin-project/venus-auth v1.0.2-0.20210507023017-76ce8b64e6db // indirect
 	github.com/gbrlsnchs/jwt/v3 v3.0.0
 	github.com/go-kit/kit v0.10.0
 	github.com/go-ole/go-ole v1.2.4 // indirect
@@ -61,7 +62,6 @@ require (
 	github.com/hashicorp/go-multierror v1.1.0
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/influxdata/influxdb1-client v0.0.0-20191209144304-8bf82d3c094d
-	github.com/ipfs-force-community/venus-auth v1.0.0
 	github.com/ipfs/bbloom v0.0.4
 	github.com/ipfs/go-bitswap v0.3.2
 	github.com/ipfs/go-block-format v0.0.3

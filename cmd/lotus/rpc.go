@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/filecoin-project/lotus/api"
-	"github.com/ipfs-force-community/venus-auth/cmd/jwtclient"
-	"github.com/ipfs-force-community/venus-auth/core"
+	"github.com/filecoin-project/venus-auth/cmd/jwtclient"
+	"github.com/filecoin-project/venus-auth/core"
 	manet "github.com/multiformats/go-multiaddr/net"
 	"go.opencensus.io/tag"
 	"golang.org/x/xerrors"
@@ -29,7 +29,7 @@ import (
 	"github.com/filecoin-project/lotus/metrics"
 	"github.com/filecoin-project/lotus/node"
 	"github.com/filecoin-project/lotus/node/impl"
-	auth2 "github.com/ipfs-force-community/venus-auth/auth"
+	auth2 "github.com/filecoin-project/venus-auth/auth"
 )
 
 var log = logging.Logger("main")
