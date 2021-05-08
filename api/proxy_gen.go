@@ -243,6 +243,8 @@ type FullNodeStruct struct {
 
 		MpoolPending func(p0 context.Context, p1 types.TipSetKey) ([]*types.SignedMessage, error) `perm:"read"`
 
+		MpoolPublish func(p0 context.Context, p1 *types.SignedMessage) error ``
+
 		MpoolPush func(p0 context.Context, p1 *types.SignedMessage) (cid.Cid, error) `perm:"write"`
 
 		MpoolPushMessage func(p0 context.Context, p1 *types.Message, p2 *MessageSendSpec) (*types.SignedMessage, error) `perm:"sign"`
@@ -250,6 +252,8 @@ type FullNodeStruct struct {
 		MpoolPushUntrusted func(p0 context.Context, p1 *types.SignedMessage) (cid.Cid, error) `perm:"write"`
 
 		MpoolSelect func(p0 context.Context, p1 types.TipSetKey, p2 float64) ([]*types.SignedMessage, error) `perm:"read"`
+
+		MpoolSelects func(p0 context.Context, p1 types.TipSetKey, p2 []float64) ([][]*types.SignedMessage, error) ``
 
 		MpoolSetConfig func(p0 context.Context, p1 *types.MpoolConfig) error `perm:"admin"`
 
@@ -1539,6 +1543,14 @@ func (s *FullNodeStub) MpoolPending(p0 context.Context, p1 types.TipSetKey) ([]*
 	return *new([]*types.SignedMessage), xerrors.New("method not supported")
 }
 
+func (s *FullNodeStruct) MpoolPublish(p0 context.Context, p1 *types.SignedMessage) error {
+	return s.Internal.MpoolPublish(p0, p1)
+}
+
+func (s *FullNodeStub) MpoolPublish(p0 context.Context, p1 *types.SignedMessage) error {
+	return xerrors.New("method not supported")
+}
+
 func (s *FullNodeStruct) MpoolPush(p0 context.Context, p1 *types.SignedMessage) (cid.Cid, error) {
 	return s.Internal.MpoolPush(p0, p1)
 }
@@ -1569,6 +1581,14 @@ func (s *FullNodeStruct) MpoolSelect(p0 context.Context, p1 types.TipSetKey, p2 
 
 func (s *FullNodeStub) MpoolSelect(p0 context.Context, p1 types.TipSetKey, p2 float64) ([]*types.SignedMessage, error) {
 	return *new([]*types.SignedMessage), xerrors.New("method not supported")
+}
+
+func (s *FullNodeStruct) MpoolSelects(p0 context.Context, p1 types.TipSetKey, p2 []float64) ([][]*types.SignedMessage, error) {
+	return s.Internal.MpoolSelects(p0, p1, p2)
+}
+
+func (s *FullNodeStub) MpoolSelects(p0 context.Context, p1 types.TipSetKey, p2 []float64) ([][]*types.SignedMessage, error) {
+	return *new([][]*types.SignedMessage), xerrors.New("method not supported")
 }
 
 func (s *FullNodeStruct) MpoolSetConfig(p0 context.Context, p1 *types.MpoolConfig) error {

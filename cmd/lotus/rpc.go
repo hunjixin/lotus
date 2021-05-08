@@ -4,9 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/filecoin-project/lotus/api/apistruct"
+	"github.com/filecoin-project/lotus/api"
 	"github.com/ipfs-force-community/venus-auth/cmd/jwtclient"
 	"github.com/ipfs-force-community/venus-auth/core"
+	manet "github.com/multiformats/go-multiaddr/net"
+	"go.opencensus.io/tag"
+	"golang.org/x/xerrors"
 	"net"
 	"net/http"
 	_ "net/http/pprof"
@@ -19,14 +22,10 @@ import (
 	"github.com/ipfs/go-cid"
 	logging "github.com/ipfs/go-log/v2"
 	"github.com/multiformats/go-multiaddr"
-	manet "github.com/multiformats/go-multiaddr/net"
-	"go.opencensus.io/tag"
-	"golang.org/x/xerrors"
 
 	"github.com/filecoin-project/go-jsonrpc"
 	"github.com/filecoin-project/go-jsonrpc/auth"
 
-	"github.com/filecoin-project/lotus/api"
 	"github.com/filecoin-project/lotus/metrics"
 	"github.com/filecoin-project/lotus/node"
 	"github.com/filecoin-project/lotus/node/impl"
@@ -98,8 +97,9 @@ func serveRPC(a api.FullNode, authEndpoint string, stop node.StopFunc, addr mult
 	if maxRequestSize != 0 { // config set
 		serverOptions = append(serverOptions, jsonrpc.WithMaxRequestSize(maxRequestSize))
 	}
-	rpcServer := jsonrpc.NewServer(serverOptions...)
-	rpcServer.Register("Filecoin", apistruct.PermissionedFullAPI(metrics.MetricedFullAPI(a)))
+	serveRpc := func(path string, hnd interface{}) {
+		rpcServer := jsonrpc.NewServer(serverOptions...)
+		rpcServer.Register("Filecoin", hnd)
 
 		if authEndpoint != "" {
 			cli := jwtclient.NewJWTClient(authEndpoint)
@@ -122,7 +122,7 @@ func serveRPC(a api.FullNode, authEndpoint string, stop node.StopFunc, addr mult
 	//pma := api.PermissionedFullAPI(metrics.MetricedFullAPI(a))
 	//serveRpc("/rpc/v1", pma)
 	//serveRpc("/rpc/v0", &v0api.WrapperV1Full{FullNode: pma})
-	serveRpc("/rpc/v0", apistruct.PermissionedFullAPI(metrics.MetricedFullAPI(a)))
+	serveRpc("/rpc/v0", api.PermissionedFullAPI(metrics.MetricedFullAPI(a)))
 
 	importAH := &auth.Handler{
 		Verify: a.AuthVerify,

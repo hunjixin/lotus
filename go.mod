@@ -147,7 +147,7 @@ require (
 	go.uber.org/fx v1.9.0
 	go.uber.org/multierr v1.6.0
 	go.uber.org/zap v1.16.0
-	golang.org/x/net v0.0.0-20201022231255-08b38378de70
+	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
 	golang.org/x/sys v0.0.0-20210324051608-47abb6519492
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0
