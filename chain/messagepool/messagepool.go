@@ -545,6 +545,19 @@ func (mp *MessagePool) Push(m *types.SignedMessage) (cid.Cid, error) {
 	return m.Cid(), nil
 }
 
+func (mp *MessagePool) Publish(m *types.SignedMessage) error {
+	msgb, err := m.Serialize()
+	if err != nil {
+		return xerrors.Errorf("error serializing message: %w", err)
+	}
+
+	err = mp.api.PubSubPublish(build.MessagesTopic(mp.netName), msgb)
+	if err != nil {
+		return xerrors.Errorf("error publishing message: %w", err)
+	}
+	return nil
+}
+
 func (mp *MessagePool) checkMessage(m *types.SignedMessage) error {
 	// big messages are bad, anti DOS
 	if m.Size() > 32*1024 {
