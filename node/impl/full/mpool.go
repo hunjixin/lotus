@@ -135,8 +135,12 @@ func (a *MpoolAPI) MpoolClear(ctx context.Context, local bool) error {
 	return nil
 }
 
-func (a *MpoolAPI) MpoolPublish(ctx context.Context, smsg *types.SignedMessage) error {
-	return a.Mpool.Publish(smsg)
+func (a *MpoolAPI) MpoolPublishMessage(ctx context.Context, smsg *types.SignedMessage) error {
+	return a.Mpool.PublishMessage(smsg)
+}
+
+func (a *MpoolAPI) MpoolPublishByAddr(ctx context.Context, addr address.Address) error {
+	return a.Mpool.PublishByAddr(addr)
 }
 
 func (m *MpoolModule) MpoolPush(ctx context.Context, smsg *types.SignedMessage) (cid.Cid, error) {
