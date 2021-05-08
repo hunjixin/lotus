@@ -2291,9 +2291,9 @@ Inputs:
 Response: `null`
 
 ### MpoolSelects
-There are not yet any comments for this method.
 
-Perms: 
+
+Perms: read
 
 Inputs:
 ```json
