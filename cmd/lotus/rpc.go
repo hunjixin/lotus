@@ -102,7 +102,7 @@ func serveRPC(a api.FullNode, authEndpoint string, stop node.StopFunc, addr mult
 		rpcServer.Register("Filecoin", hnd)
 
 		if authEndpoint != "" {
-			cli := jwtclient.NewJWTClient(authEndpoint)
+			cli := NewJWTClient(authEndpoint)
 			ah := &Handler2{
 				Verify: cli.Verify,
 				Next:   rpcServer.ServeHTTP,
